@@ -1,0 +1,167 @@
+﻿@using MAFBurger.WebApp.Models.Concrete
+@model List<MenuViewModel>
+
+@{
+    Layout = "_LayoutBoxContent";
+    ViewData["LayoutHeaderTitle"] = "MENÜLER";
+    ViewData["LayoutHeaderButtonController"] = "Menu";
+    ViewData["LayoutHeaderButtonAction"] = "Add";
+    ViewData["LayoutHeaderButtonTitle"] = "Sepete Git";
+
+    SelectList sauceSelectList = new SelectList((List<SauceViewModel>)ViewBag.sauce, "Id", "Name","Price");
+}
+
+@section LayoutBoxBody
+{
+    <style>
+        .card {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+            height: 100%; 
+            position: relative;
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+        .card-title {
+            font-weight: bold;
+            color: darkslategray;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .card-text {
+            color: darkslategray;
+            font-size: 1rem;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+
+        .btn-primary {
+            background-color: darkblue;
+            border-color: darkblue;
+            border-radius: 4px;
+            padding: 0.7rem 1rem;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: auto; 
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: darkblue;
+                border-color: darkblue;
+            }
+
+        .status {
+            font-size: 0.9rem;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+            .status.active {
+                background-color: green;
+            }
+
+            .status.inactive {
+                background-color: red;
+            }
+
+        .card-deck {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: space-between;
+        }
+
+            .card-deck .col-md-4 {
+                flex: 1 1 calc(33.3333% - 1.5rem);
+            }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1; 
+        }
+
+            .card-body .d-flex {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                margin-top: auto;
+                text-align: center;
+            }
+
+                .card-body .d-flex .status {
+                    margin-top: 0;
+                }
+    </style>
+
+    @if (Model.Any())
+    {
+        <div class="card-deck">
+            @foreach (var menu in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@menu.Name</h5>
+                            <p class="card-text">
+                                <strong>Açıklama:</strong> @menu.Description <br />
+                                <strong>Burger Extras:</strong> @menu.BurgerExtras <br />
+                                <strong>Beverages:</strong> @menu.Beverages <br />
+                                <strong>Fiyat:</strong> @menu.Price TL <br />
+                                <select class="form-control" id="sauce-@menu.Id">
+                                    <option value="">Soslar:</option>
+                                    @foreach (var sauce in ViewBag.sauce)
+                                    {
+                                        <option value="@sauce.Id">@sauce.Name - @sauce.Price TL</option>
+                                    }
+                                </select>
+                                <br />
+                                <strong>Toplam Fiyat:</strong> <span id="total-price-@menu.Id">@menu.Price</span> TL <br />
+                            </p>
+                            <div class="d-flex">
+                                <button class="btn btn-primary">
+                                    <a asp-controller="Menu" asp-action="Add" asp-route-menuId="@menu.Id"                      style="color: white; text-decoration: none;">Sepete Ekle</a>
+                                </button>
+                                <span class="status @(menu.IsActive ? "active" : "inactive")">
+                                    @(menu.IsActive ? "Aktif" : "Pasif")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted text-center">Liste boş</p>
+    }
+}
+
+
+
+

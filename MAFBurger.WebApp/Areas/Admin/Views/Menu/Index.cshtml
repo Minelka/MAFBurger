@@ -1,0 +1,67 @@
+﻿@model List<MenuViewModel>
+
+<table class="table">
+    <a asp-action="Create" class="btn btn-primary"> Yeni Menü Ekle</a>
+    <thead>
+        <tr>
+            <th>Menü Adı</th>
+            <th>Açıklama</th>
+            <th>Fiyat</th>
+            <th>İçecekler</th>
+            <th>Ekstra Malzemeler</th>
+            <th>Soslar</th>
+            <th>Sil</th>
+            <th>Düzenle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var menu in Model)
+        {
+            <tr>
+                <td>@menu.Name</td>
+                <td>@menu.Description</td>
+                <td>@menu.Price</td>
+
+                <!--Alttaki yorum satırları buraya gelecek.gelmesi gerekmeyedebilir.-->
+
+                <td><a asp-action="Delete" asp-route-id="@menu.Id" class="btn btn-danger">Menüyü Sil</a></td>
+                <td><a asp-action="Detail" asp-route-id="@menu.Id" class="btn btn-danger">Menü Detayları</a></td>
+                <td><a asp-action="Edit" asp-route-id="@menu.Id" class="btn btn-secondary">Menüyü Güncelle</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@* <!-- Beverages Dropdown - Zorunlu -->
+<td>
+    <select id="beverage-@menu.Id" name="beverage-@menu.Id" class="form-control" required>
+        <option value="" disabled selected>İçecek seçiniz</option>
+        @foreach (var beverage in ViewBag.Beverages as List<SelectListItem>)
+        {
+            <option value="@beverage.Value">@beverage.Text</option>
+        }
+    </select>
+</td>
+
+<!-- Burger Extras Dropdown - "İstemiyorum" Seçeneği Eklendi -->
+<td>
+    <select id="burger-extra-@menu.Id" name="burger-extra-@menu.Id" class="form-control">
+        <option value="" selected>İstemiyorum</option>
+        @foreach (var extra in ViewBag.BurgerExtras as List<SelectListItem>)
+        {
+            <option value="@extra.Value">@extra.Text</option>
+        }
+    </select>
+</td>
+
+<!-- Sauces Dropdown - Zorunlu -->
+<td>
+    <select id="sauce-@menu.Id" name="sauce-@menu.Id" class="form-control" required>
+        <option value="" disabled selected>Sos seçiniz</option>
+        @foreach (var sauce in ViewBag.Sauces as List<SelectListItem>)
+        {
+            <option value="@sauce.Value">@sauce.Text</option>
+        }
+    </select>
+</td> *@

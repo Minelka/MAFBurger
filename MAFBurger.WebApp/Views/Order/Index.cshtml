@@ -1,0 +1,56 @@
+﻿@using MAFBurger.WebApp.Data.Concrete
+@using MAFBurger.WebApp.Models.Concrete
+@model List<OrderViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>Menüsü</th>
+            <th>Boyutu</th>
+            <th>Adet</th>
+            <th>Ekstralar</th>
+            <th>Fiyatı</th>
+            <th>Müşteri</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>
+                    <ul>
+                        @foreach (OrderMenu orderMenu in order.OrderMenus)
+                        {
+                            <li>@orderMenu.Menu.Name</li>
+                        }
+                    </ul>
+                </td>
+                <td>@order.Size</td>
+                <td>@order.Quantity</td>
+                <td>
+                    <ul>
+                        @foreach (OrderExtra orderExtra in order.OrderExtras)
+                        {
+                            <li>@orderExtra.Extra.Name</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (OrderMenu orderMenu in order.OrderMenus)
+                        {
+                            <li>@orderMenu.Menu.Price</li>
+                        }
+                    </ul>
+                </td>
+                <td>@order.AppUser.UserName</td>
+                <td>
+                    <button class="btn btn-primary">
+                        <a asp-controller="Order" asp-action="Add" asp-route-menuId="@order.Id" style="color: white; text-decoration: none;">Siparişi Tamamla</a>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>

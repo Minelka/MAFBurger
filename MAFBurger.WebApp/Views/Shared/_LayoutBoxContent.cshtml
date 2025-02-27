@@ -1,0 +1,45 @@
+﻿﻿@{
+    Layout = "_Layout";
+
+    string headerTitle = ViewData["LayoutHeaderTitle"]?.ToString() ?? "";
+    string buttonController = ViewData["LayoutHeaderButtonController"]?.ToString() ?? "";
+    string buttonAction = ViewData["LayoutHeaderButtonAction"]?.ToString() ?? "";
+    string buttonTitle = ViewData["LayoutHeaderButtonTitle"]?.ToString() ?? "";
+
+
+    if (ViewData.ContainsKey("IsAjaxPage") && ViewBag.IsAjaxPage)
+        Layout = "";
+
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-black-50 float-start my-2">@headerTitle</h2>
+            <a class="btn btn-success float-end my-2" role="button" asp-controller="@buttonController" asp-action="@buttonAction">@buttonTitle</a>
+            @await RenderSectionAsync("LayoutBoxHeader", required: false)
+        </div>
+        <div class="card-body">
+
+            @await RenderSectionAsync("LayoutBoxNotifation", required: false)
+
+
+            @await RenderSectionAsync("LayoutBoxBody", required: false)
+
+        </div>
+        <div class="card-footer text-body-secondary">
+            <span class="badge text-info">@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</span>
+        </div>
+    </div>
+</div>
+
+@if (ViewData.ContainsKey("IsAjaxPage") && ViewBag.IsAjaxPage)
+{
+    @await RenderSectionAsync("LayoutBoxScripts", required: false)
+}
+else
+{
+    @section Scripts
+    {
+    @await RenderSectionAsync("LayoutBoxScripts", required: false)
+    }
+}
